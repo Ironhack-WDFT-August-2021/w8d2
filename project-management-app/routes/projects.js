@@ -1,10 +1,16 @@
 const router = require("express").Router();
 const Project = require('../models/Project');
 
+router.get('/something', (req, res, next) => {
+	console.log(req.session.user);
+	res.json(req.session.user);
+});
+
 // get all projects
 router.get('/', (req, res, next) => {
 	Project.find()
 		.then(projects => {
+			console.log('hello', req.session.user);
 			res.status(200).json(projects);
 		})
 		.catch(err => next(err));
@@ -14,9 +20,11 @@ router.get('/', (req, res, next) => {
 // create a project
 router.post('/', (req, res, next) => {
 	const { title, description } = req.body;
+	const owner = req.session.user._id;
 	Project.create({
 		title,
-		description
+		description,
+		owner
 	})
 		.then(project => {
 			// we return http status code 201 - created
@@ -29,6 +37,7 @@ router.post('/', (req, res, next) => {
 
 // get a specific project
 router.get('/:id', (req, res, next) => {
+	console.log(req.session.user);
 	Project.findById(req.params.id)
 		.then(project => {
 			// check if the id is not valid

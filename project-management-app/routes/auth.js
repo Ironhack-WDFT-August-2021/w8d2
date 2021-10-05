@@ -24,6 +24,7 @@ router.post('/login', (req, res, next) => {
 				res.status(400).json({ message: 'incorrect credentials' })
 			}
 		})
+		.catch(err => next(err));
 });
 
 
@@ -74,12 +75,19 @@ router.post('/signup', (req, res, next) => {
 router.get('/loggedin', (req, res, next) => {
 	console.log('this is the loggedin in user from the session: ', req.session.user);
 	const user = req.session.user;
+
 	res.json(user);
 });
 
 router.delete('/logout', (req, res, next) => {
-	req.session.destroy();
-	res.status(200).json({ message: 'successful logout' });
+	req.session.destroy(err => {
+		if (err) {
+			next(err);
+			// logout was successful -> we redirect
+		} else {
+			res.json('successful logout')
+		}
+	})
 })
 
 module.exports = router;

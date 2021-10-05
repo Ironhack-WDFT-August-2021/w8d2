@@ -21,7 +21,7 @@ require("./config")(app);
 
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
-const DB_URL = 'mongodb://localhost/project-management-app'
+const DB_URL = "mongodb://localhost/project-management-app"
 
 app.use(
 	session({
@@ -40,11 +40,12 @@ app.use(
 
 // 👇 Start handling routes here
 // Contrary to the views version, all routes are controlled from the routes/index.js
-const projects = require("./routes/projects");
-app.use("/api/projects", projects);
 
 const auth = require("./routes/auth");
 app.use("/api/auth", auth);
+
+const projects = require("./routes/projects");
+app.use("/api/projects", projects);
 
 
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes

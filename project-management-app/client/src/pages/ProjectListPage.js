@@ -12,7 +12,7 @@ export default function ProjectListPage() {
 
 	const getAllProjects = () => {
 		// get request to the server
-		axios.get(`${API_URL}/api/projects`)
+		axios.get(`/api/projects`)
 			.then(response => {
 				console.log(response)
 				setProjects(response.data);
